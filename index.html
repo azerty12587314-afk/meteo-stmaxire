@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🔬 St Maxire Météo Lab - Master Edition v3.2</title>
+    <title>🔬 Météo Lab - Expert Edition</title>
+    <!-- Chargement de Tailwind CSS v4 et Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        /* Animation simple et fluide pour les icônes météo */
         .weather-pulse {
             animation: pulse 3s infinite ease-in-out;
         }
@@ -21,16 +21,18 @@
 
     <div class="max-w-6xl mx-auto space-y-6">
         
+        <!-- En-tête -->
         <header class="text-center md:text-left flex flex-col md:flex-row justify-between items-center bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-xl">
             <div>
                 <h1 class="text-3xl font-extrabold text-blue-400 tracking-tight">🔬 Météo Lab</h1>
-                <p class="text-slate-400 mt-1">Analyse avancée : Temps réel, Mailles fines & Suites Long Terme (10J)</p>
+                <p class="text-slate-400 mt-1">Analyse avancée : Temps réel, Mailles fines & Multi-modèles comparés</p>
             </div>
             <button onclick="chargerToutesLesDonnees()" class="mt-4 md:mt-0 bg-blue-600 hover:bg-blue-500 text-white font-semibold px-6 py-2.5 rounded-xl transition-all shadow-lg active:scale-95 cursor-pointer">
                 Actualiser
             </button>
         </header>
 
+        <!-- BARRE DE RECHERCHE DE VILLE DYNAMIQUE -->
         <section class="bg-slate-800 p-4 rounded-xl border border-slate-700 flex flex-col sm:flex-row gap-3 items-center justify-between">
             <div class="w-full sm:w-auto flex items-center gap-2">
                 <span class="text-sm font-bold text-slate-400">📍 Lieu actuel :</span>
@@ -46,68 +48,85 @@
             </div>
         </section>
 
+        <!-- AGENCEMENT HAUT : ÉVOLUTION DU CIEL & COURBE AROME -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             
+            <!-- Colonne Gauche : Carrés 2x2 + Nouveau Bloc 3 Jours -->
             <div class="space-y-6 flex flex-col justify-between">
+                <!-- Bloc Évolution du ciel en Carré 2x2 -->
                 <section class="bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-xl flex-1 flex flex-col justify-between">
                     <div>
                         <h3 class="text-lg font-bold text-emerald-400 mb-1">📅 Évolution du ciel aujourd'hui</h3>
-                        <p class="text-xs text-slate-400 mb-4">Aperçu par tranches horaires locales (AROME).</p>
+                        <p class="text-xs text-slate-400 mb-4">Aperçu par tranches horaires locales (AROME - 1.3km).</p>
                     </div>
                     <div class="grid grid-cols-2 gap-4 text-center my-auto">
-                        <div class="bg-slate-900/50 p-4 rounded-xl border border-slate-700 flex flex-col justify-center items-center">
+                        <!-- Matin -->
+                        <div class="bg-slate-900/50 p-4 rounded-xl border border-slate-700 flex flex-col justify-center items-center min-h-[120px]">
                             <span class="text-xs font-semibold text-slate-400">MATIN (08h)</span>
                             <div id="icone-matin" class="text-4xl my-1 weather-pulse">⏳</div>
-                            <span id="desc-matin" class="text-[10px] text-slate-400 block h-4 mb-1">--</span>
-                            <span id="temp-matin" class="text-sm font-bold">--°C</span>
+                            <span id="desc-matin" class="text-[10px] text-slate-400 block h-4 mb-1 animate-pulse bg-slate-700 w-16 rounded mx-auto"></span>
+                            <span id="temp-matin" class="text-sm font-bold animate-pulse bg-slate-700 w-12 h-4 rounded block mx-auto mt-1"></span>
                         </div>
-                        <div class="bg-slate-900/50 p-4 rounded-xl border border-slate-700 flex flex-col justify-center items-center">
+                        <!-- Midi -->
+                        <div class="bg-slate-900/50 p-4 rounded-xl border border-slate-700 flex flex-col justify-center items-center min-h-[120px]">
                             <span class="text-xs font-semibold text-slate-400">MIDI (12h)</span>
                             <div id="icone-midi" class="text-4xl my-1 weather-pulse">⏳</div>
-                            <span id="desc-midi" class="text-[10px] text-slate-400 block h-4 mb-1">--</span>
-                            <span id="temp-midi" class="text-sm font-bold">--°C</span>
+                            <span id="desc-midi" class="text-[10px] text-slate-400 block h-4 mb-1 animate-pulse bg-slate-700 w-16 rounded mx-auto"></span>
+                            <span id="temp-midi" class="text-sm font-bold animate-pulse bg-slate-700 w-12 h-4 rounded block mx-auto mt-1"></span>
                         </div>
-                        <div class="bg-slate-900/50 p-4 rounded-xl border border-slate-700 flex flex-col justify-center items-center">
+                        <!-- Après-midi -->
+                        <div class="bg-slate-900/50 p-4 rounded-xl border border-slate-700 flex flex-col justify-center items-center min-h-[120px]">
                             <span class="text-xs font-semibold text-slate-400">APRÈS-MIDI (16h)</span>
                             <div id="icone-aprem" class="text-4xl my-1 weather-pulse">⏳</div>
-                            <span id="desc-aprem" class="text-[10px] text-slate-400 block h-4 mb-1">--</span>
-                            <span id="temp-aprem" class="text-sm font-bold">--°C</span>
+                            <span id="desc-aprem" class="text-[10px] text-slate-400 block h-4 mb-1 animate-pulse bg-slate-700 w-16 rounded mx-auto"></span>
+                            <span id="temp-aprem" class="text-sm font-bold animate-pulse bg-slate-700 w-12 h-4 rounded block mx-auto mt-1"></span>
                         </div>
-                        <div class="bg-slate-900/50 p-4 rounded-xl border border-slate-700 flex flex-col justify-center items-center">
+                        <!-- Soir -->
+                        <div class="bg-slate-900/50 p-4 rounded-xl border border-slate-700 flex flex-col justify-center items-center min-h-[120px]">
                             <span class="text-xs font-semibold text-slate-400">SOIR (20h)</span>
                             <div id="icone-soir" class="text-4xl my-1 weather-pulse">⏳</div>
-                            <span id="desc-soir" class="text-[10px] text-slate-400 block h-4 mb-1">--</span>
-                            <span id="temp-soir" class="text-sm font-bold">--°C</span>
+                            <span id="desc-soir" class="text-[10px] text-slate-400 block h-4 mb-1 animate-pulse bg-slate-700 w-16 rounded mx-auto"></span>
+                            <span id="temp-soir" class="text-sm font-bold animate-pulse bg-slate-700 w-12 h-4 rounded block mx-auto mt-1"></span>
                         </div>
                     </div>
                 </section>
 
+                <!-- Bloc prévisions sur 3 Jours avec animations -->
                 <section class="bg-slate-800 p-5 rounded-2xl border border-slate-700 shadow-xl">
                     <h3 class="text-md font-bold text-cyan-400 mb-3">🔮 Tendances globales sur 3 Jours</h3>
                     <div class="grid grid-cols-3 gap-3 text-center">
                         <div class="bg-slate-900/40 p-3 rounded-xl border border-slate-700">
                             <span class="text-xs font-bold text-slate-400 block mb-1">Aujourd'hui</span>
                             <div id="p3j-img-0" class="text-3xl my-1 weather-pulse">⏳</div>
-                            <span id="p3j-txt-0" class="text-[10px] text-slate-300 block h-6 flex items-center justify-center leading-tight">--</span>
+                            <span id="p3j-txt-0" class="text-[10px] text-slate-300 block h-6 flex items-center justify-center leading-tight animate-pulse bg-slate-700/50 w-full rounded"></span>
                         </div>
                         <div class="bg-slate-900/40 p-3 rounded-xl border border-slate-700">
                             <span class="text-xs font-bold text-slate-400 block mb-1">Demain</span>
                             <div id="p3j-img-1" class="text-3xl my-1 weather-pulse">⏳</div>
-                            <span id="p3j-txt-1" class="text-[10px] text-slate-300 block h-6 flex items-center justify-center leading-tight">--</span>
+                            <span id="p3j-txt-1" class="text-[10px] text-slate-300 block h-6 flex items-center justify-center leading-tight animate-pulse bg-slate-700/50 w-full rounded"></span>
                         </div>
                         <div class="bg-slate-900/40 p-3 rounded-xl border border-slate-700">
                             <span class="text-xs font-bold text-slate-400 block mb-1">Après-demain</span>
                             <div id="p3j-img-2" class="text-3xl my-1 weather-pulse">⏳</div>
-                            <span id="p3j-txt-2" class="text-[10px] text-slate-300 block h-6 flex items-center justify-center leading-tight">--</span>
+                            <span id="p3j-txt-2" class="text-[10px] text-slate-300 block h-6 flex items-center justify-center leading-tight animate-pulse bg-slate-700/50 w-full rounded"></span>
                         </div>
                     </div>
                 </section>
             </div>
 
+            <!-- Bloc Courbe Arome (Maille Fine 48h) avec Sélecteur de type de donnée -->
             <section class="bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-xl lg:h-full flex flex-col justify-between">
                 <div>
-                    <h3 class="text-lg font-bold text-amber-400 mb-1">🎯 Maille Fine Haute Résolution (48h)</h3>
-                    <p id="label-modele-arome" class="text-xs text-slate-400 mb-4">Modèle haute résolution AROME direct Météo-France.</p>
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-2">
+                        <h3 class="text-lg font-bold text-amber-400">🎯 Maille Fine Haute Résolution (48h)</h3>
+                        <!-- Onglets Données Arome -->
+                        <div class="flex bg-slate-900 p-1 rounded-lg border border-slate-700 text-xs">
+                            <button onclick="changerTypeDonneeArome('temp')" id="tab-arome-temp" class="px-2 py-1 rounded bg-amber-500 font-bold text-slate-900 transition-all cursor-pointer">🌡️ Temp</button>
+                            <button onclick="changerTypeDonneeArome('pluie')" id="tab-arome-pluie" class="px-2 py-1 rounded text-slate-400 transition-all cursor-pointer">🌧️ Pluie</button>
+                            <button onclick="changerTypeDonneeArome('vent')" id="tab-arome-vent" class="px-2 py-1 rounded text-slate-400 transition-all cursor-pointer">💨 Vent</button>
+                        </div>
+                    </div>
+                    <p id="label-modele-arome" class="text-xs text-slate-400 mb-4">Modèle haute résolution AROME direct Météo-France (Précision mailles : 1.3 km).</p>
                 </div>
                 <div class="relative h-72 lg:h-80 w-full">
                     <canvas id="graphiqueArome"></canvas>
@@ -115,6 +134,7 @@
             </section>
         </div>
 
+        <!-- FILTRE INTERACTIF POUR LE GRAPHIQUE 5 JOURS -->
         <section class="bg-slate-800 p-4 rounded-xl border border-slate-700 flex flex-wrap gap-3 items-center">
             <span class="text-sm font-bold text-slate-400 mr-2">Filtre du graphique macro :</span>
             <div onclick="toggleModelDataset(0)" id="btn-0" class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold border border-cyan-500 bg-cyan-500/20 text-cyan-300 transition-all cursor-pointer select-none">
@@ -131,22 +151,35 @@
             </div>
         </section>
 
+        <!-- GRAND GRAPHIQUE COMPARE SUR 5 JOURS (PLEINE LARGEUR) -->
         <section class="bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-xl">
-            <h3 class="text-lg font-bold text-blue-400 mb-1">📈 Tendances Comparées (0 à 5 Jours)</h3>
-            <p class="text-xs text-slate-400 mb-4">Comparatif multi-modèles incluant désormais l'ECMWF IFS.</p>
-            <div class="relative h-80">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-2">
+                <div>
+                    <h3 class="text-lg font-bold text-blue-400">📈 Tendances Comparées (0 à 5 Jours)</h3>
+                    <p class="text-xs text-slate-400">Superposition multi-modèles mondiaux et européens pour isoler les incertitudes.</p>
+                </div>
+                <!-- Onglets Données Macro -->
+                <div class="flex bg-slate-900 p-1 rounded-lg border border-slate-700 text-xs">
+                    <button onclick="changerTypeDonneePrincipal('temp')" id="tab-macro-temp" class="px-2 py-1 rounded bg-blue-500 font-bold text-slate-900 transition-all cursor-pointer">🌡️ Temp</button>
+                    <button onclick="changerTypeDonneePrincipal('pluie')" id="tab-macro-pluie" class="px-2 py-1 rounded text-slate-400 transition-all cursor-pointer">🌧️ Pluie</button>
+                    <button onclick="changerTypeDonneePrincipal('vent')" id="tab-macro-vent" class="px-2 py-1 rounded text-slate-400 transition-all cursor-pointer">💨 Vent</button>
+                </div>
+            </div>
+            <div class="relative h-80 mt-4">
                 <canvas id="graphiquePrincipal"></canvas>
             </div>
         </section>
 
+        <!-- GRAPHIQUE DE TENDANCE LONG TERME : SEULEMENT LA SUITE (5 À 10 JOURS) -->
         <section class="bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-xl">
             <h3 class="text-lg font-bold text-indigo-400 mb-1">🔮 Suite Long Terme : Uniquement ECMWF IFS (5 à 10 Jours)</h3>
-            <p class="text-xs text-slate-400 mb-4">Vue exclusive sur la fin de l'échéance pour cibler l'évolution globale.</p>
+            <p class="text-xs text-slate-400 mb-4">Vue exclusive sur la fin de l'échéance via le modèle de référence européen.</p>
             <div class="relative h-72">
                 <canvas id="graphique10Jours"></canvas>
             </div>
         </section>
 
+        <!-- SECTION CARTE INTERACTIVE VENTUSKY INTÉGRALE -->
         <section class="bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-xl space-y-4">
             <div class="flex items-center justify-between">
                 <h2 class="text-lg font-bold text-emerald-400">💨 Flux dynamique & Cartographie interactive (Ventusky)</h2>
@@ -159,11 +192,12 @@
 
     </div>
 
+    <!-- SCRIPT PRINCIPAL OPTIMISÉ AVEC ONGLET MULTI-DONNÉES -->
     <script>
         // ==========================================
-        // CONFIGURATION DU SITE POUR CET REPO
+        // CONFIGURATION DU SITE POUR CE REPO
         // ==========================================
-        const CONFIG_VILLE = "Saint-Maxire"; // <-- Change juste ce nom sur tes dépôts copiés !
+        const CONFIG_VILLE = "Saint-Maxire";
         // ==========================================
 
         let currentLat = "";
@@ -172,7 +206,13 @@
         let chartPrincipal = null;
         let chartArome = null;
         let chart10Jours = null;
+        
         let statusModeles = [true, true, true, true]; 
+        let typeDonneePrincipal = 'temp'; // 'temp', 'pluie', 'vent'
+        let typeDonneeArome = 'temp'; // 'temp', 'pluie', 'vent'
+
+        // Base de stockage globale des données reçues des API
+        let baseDonneesRaw = {}; 
 
         let donneesMeteo = { 
             labels5J: [], labels2J: [], labelsSuite10J: [], 
@@ -180,26 +220,16 @@
         };
 
         const weatherCodesFr = {
-            0: { txt: "Ciel dégagé", img: "☀️" },
-            1: { txt: "Peu nuageux", img: "🌤️" },
-            2: { txt: "Partiellement nuageux", img: "⛅" },
-            3: { txt: "Couvert", img: "☁️" },
-            45: { txt: "Brouillard", img: "🌫️" },
-            48: { txt: "Brouillard givrant", img: "🌫️" },
-            51: { txt: "Bruine légère", img: "🌦️" },
-            53: { txt: "Bruine modérée", img: "🌦️" },
-            55: { txt: "Bruine dense", img: "🌦️" },
-            61: { txt: "Pluie faible", img: "🌧️" },
-            63: { txt: "Pluie modérée", img: "🌧️" },
-            65: { txt: "Pluie forte", img: "🌧️" },
-            71: { txt: "Neige légère", img: "❄️" },
-            73: { txt: "Neige modérée", img: "❄️" },
-            75: { txt: "Neige forte", img: "❄️" },
-            80: { txt: "Averses de pluie faibles", img: "🌦️" },
-            81: { txt: "Averses de pluie modérées", img: "🌧️" },
-            82: { txt: "Averses de pluie violentes", img: "🌧️" },
-            95: { txt: "Orage faible à modéré", img: "⛈️" },
-            96: { txt: "Orage avec grêle faible", img: "⛈️" },
+            0: { txt: "Ciel dégagé", img: "☀️" }, 1: { txt: "Peu nuageux", img: "🌤️" },
+            2: { txt: "Partiellement nuageux", img: "⛅" }, 3: { txt: "Couvert", img: "☁️" },
+            45: { txt: "Brouillard", img: "🌫️" }, 48: { txt: "Brouillard givrant", img: "🌫️" },
+            51: { txt: "Bruine légère", img: "🌦️" }, 53: { txt: "Bruine modérée", img: "🌦️" },
+            55: { txt: "Bruine dense", img: "🌦️" }, 61: { txt: "Pluie faible", img: "🌧️" },
+            63: { txt: "Pluie modérée", img: "🌧️" }, 65: { txt: "Pluie forte", img: "🌧️" },
+            71: { txt: "Neige légère", img: "❄️" }, 73: { txt: "Neige modérée", img: "❄️" },
+            75: { txt: "Neige forte", img: "❄️" }, 80: { txt: "Averses de pluie faibles", img: "🌦️" },
+            81: { txt: "Averses de pluie modérées", img: "🌧️" }, 82: { txt: "Averses de pluie violentes", img: "🌧️" },
+            95: { txt: "Orage faible à modéré", img: "⛈️" }, 96: { txt: "Orage avec grêle faible", img: "⛈️" },
             99: { txt: "Orage avec grêle forte", img: "⛈️" }
         };
 
@@ -213,7 +243,7 @@
 
         async function chercherCoordonneesVille(nomVille) {
             try {
-                const urlGeocode = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(nomVille)}&count=1&language=fr&format=json`;
+                const urlGeocode = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(nomVille)}&count=1&language=fr&country_code=fr&format=json`;
                 const res = await fetch(urlGeocode);
                 const data = await res.json();
 
@@ -221,9 +251,8 @@
                     const ville = data.results[0];
                     currentLat = ville.latitude.toFixed(4);
                     currentLon = ville.longitude.toFixed(4);
-                    
-                    const paysInfo = ville.country ? `, ${ville.country}` : '';
-                    document.getElementById('nom-lieu-actif').innerText = `${ville.name}${paysInfo}`;
+                    const regionInfo = ville.admin1 ? `, ${ville.admin1}` : '';
+                    document.getElementById('nom-lieu-actif').innerText = `${ville.name}${regionInfo}`;
                     return true;
                 }
             } catch (err) {
@@ -235,20 +264,31 @@
         async function rechercherVille() {
             const saisie = document.getElementById('input-recherche').value.trim();
             if (!saisie) return;
-
+            activerSkeletons();
             const trouve = await chercherCoordonneesVille(saisie);
             if (trouve) {
                 document.getElementById('input-recherche').value = "";
                 chargerToutesLesDonnees();
             } else {
-                alert("Ville non trouvée, réessaye !");
+                alert("Ville non trouvée en France, réessaye !");
+                desactiverSkeletonsAucuneDonnee();
             }
         }
 
-        async function fetchModelData(modelName, days, inclureWeatherCode = false) {
-            let url = `https://api.open-meteo.com/v1/forecast?latitude=${currentLat}&longitude=${currentLon}&hourly=temperature_2m${inclureWeatherCode ? ",weather_code" : ""}&models=${modelName}&forecast_days=${days}`;
+        function activerSkeletons() {
+            ["matin", "midi", "aprem", "soir"].forEach(m => {
+                document.getElementById(`icone-${m}`).innerText = "⏳";
+                document.getElementById(`desc-${m}`).className = "text-[10px] text-slate-400 block h-4 mb-1 animate-pulse bg-slate-700 w-16 rounded mx-auto";
+                document.getElementById(`desc-${m}`).innerText = "";
+                document.getElementById(`temp-${m}`).className = "text-sm font-bold animate-pulse bg-slate-700 w-12 h-4 rounded block mx-auto mt-1";
+                document.getElementById(`temp-${m}`).innerText = "";
+            });
+        }
+
+        async function fetchModelData(modelName, days, variablesExtra = "") {
+            let url = `https://api.open-meteo.com/v1/forecast?latitude=${currentLat}&longitude=${currentLon}&hourly=temperature_2m,precipitation,wind_gusts_10m${variablesExtra}&models=${modelName}&forecast_days=${days}`;
             const response = await fetch(url);
-            if (!response.ok) throw new Error(`Erreur sur le modèle ${modelName}`);
+            if (!response.ok) throw new Error(`Erreur modèle ${modelName}`);
             return await response.json();
         }
 
@@ -256,118 +296,150 @@
             try {
                 actualiserCarteVentusky();
 
-                // 1. Acquisition Multi-modèles (5 Jours) + Ajout ECMWF de 0 à 5j
+                // Acquisition Multi-modèles élargie avec précipitations et rafales
                 const [dataArpege, dataIcon, dataGfs, dataEC10J] = await Promise.all([
                     fetchModelData('meteofrance_arpege_europe', 5),
                     fetchModelData('icon_seamless', 5),
                     fetchModelData('gfs_seamless', 5),
-                    fetchModelData('ecmwf_ifs', 10, true)
+                    fetchModelData('ecmwf_ifs', 10, ",weather_code")
                 ]);
 
-                // Structuration 5 jours pour le premier graphique
+                baseDonneesRaw.arpege = dataArpege.hourly;
+                baseDonneesRaw.icon = dataIcon.hourly;
+                baseDonneesRaw.gfs = dataGfs.hourly;
+                baseDonneesRaw.ecmwf = dataEC10J.hourly;
+
                 donneesMeteo.labels5J = dataArpege.hourly.time.map(t => new Date(t).toLocaleString('fr-FR', {day: 'numeric', month: 'short', hour: '2-digit'}));
-                donneesMeteo.arpege = dataArpege.hourly.temperature_2m;
-                donneesMeteo.icon = dataIcon.hourly.temperature_2m;
-                donneesMeteo.gfs = dataGfs.hourly.temperature_2m;
-                
-                // Extraction de l'ECMWF de 0 à 5j (les 120 premières heures)
-                donneesMeteo.ec5j = dataEC10J.hourly.temperature_2m.slice(0, 120);
-
-                // 2. Traitement de la SUITE exclusive ECMWF de 5 à 10 jours (heures 120 à 240)
                 donneesMeteo.labelsSuite10J = dataEC10J.hourly.time.slice(120, 240).map(t => new Date(t).toLocaleString('fr-FR', {day: 'numeric', month: 'short', hour: '2-digit'}));
-                donneesMeteo.ecSuite10j = dataEC10J.hourly.temperature_2m.slice(120, 240);
 
-                // Traitement et affichage du bloc Prévisions globales sur 3 jours (Index 12h, 36h, 60h du modèle global)
-                const indexJours = [12, 36, 60]; 
-                indexJours.forEach((idx, i) => {
+                // Remplissage du bloc 3 Jours (Index 12h, 36h, 60h)
+                [12, 36, 60].forEach((idx, i) => {
                     let code = dataEC10J.hourly.weather_code[idx];
                     let info = obtenirInfosMeteo(code);
                     document.getElementById(`p3j-img-${i}`).innerText = info.img;
+                    document.getElementById(`p3j-txt-${i}`).className = "text-[10px] text-slate-300 block h-6 flex items-center justify-center leading-tight";
                     document.getElementById(`p3j-txt-${i}`).innerText = info.txt;
                 });
 
-                // 3. Acquisition Maille Fine (AROME)
+                // Acquisition Maille Fine (AROME)
                 let dataArome = null;
                 try {
-                    dataArome = await fetchModelData('meteofrance_arome_france_hd', 2, true);
-                    document.getElementById('label-modele-arome').innerText = "🎯 Modèle officiel AROME (Météo-France 48h Direct)";
+                    dataArome = await fetchModelData('meteofrance_arome_france_hd', 2, ",weather_code");
+                    document.getElementById('label-modele-arome').innerText = "🎯 Modèle officiel AROME (Météo-France Direct - Mailles ultra-fines 1.3 km)";
                 } catch(e) {
-                    console.warn("API AROME indisponible, bascule locale sur ICON-D2.");
                     try {
-                        dataArome = await fetchModelData('icon_d2', 2, true);
-                        document.getElementById('label-modele-arome').innerText = "🎯 Modèle de secours haute résolution ICON-D2 (Allemagne 48h)";
-                    } catch(err2) {
-                        console.error("Modèle de secours en panne.");
-                    }
+                        dataArome = await fetchModelData('icon_d2', 2, ",weather_code");
+                        document.getElementById('label-modele-arome').innerText = "🎯 Modèle de secours haute résolution ICON-D2 (Allemagne - 2.2 km)";
+                    } catch(err2) { console.error("Échec des mailles fines."); }
                 }
 
                 if (dataArome) {
+                    baseDonneesRaw.arome = dataArome.hourly;
                     donneesMeteo.labels2J = dataArome.hourly.time.map(t => new Date(t).toLocaleString('fr-FR', {day: 'numeric', hour: '2-digit'}));
-                    donneesMeteo.arome = dataArome.hourly.temperature_2m;
                     calculerIntervallesJournee(dataArome.hourly);
                 } else {
                     donneesMeteo.labels2J = [];
-                    donneesMeteo.arome = [];
                     reinitialiserIntervallesHorsZone();
                 }
 
-                // Construction des composants graphiques
+                // Construction initiale des graphiques
                 construireGraphiquePrincipal();
                 construireGraphiqueArome();
                 construireGraphiqueSuite10Jours();
 
             } catch (erreur) {
                 console.error("Erreur d'acquisition générale :", erreur);
+                reinitialiserIntervallesHorsZone();
             }
         }
 
         function calculerIntervallesJournee(hourly) {
-            const indexMatin = 8; const indexMidi = 12; const indexAprem = 16; const indexSoir = 20;
+            const moments = { matin: 8, midi: 12, aprem: 16, soir: 20 };
             
-            const infoMatin = obtenirInfosMeteo(hourly.weather_code[indexMatin]);
-            const infoMidi = obtenirInfosMeteo(hourly.weather_code[indexMidi]);
-            const infoAprem = obtenirInfosMeteo(hourly.weather_code[indexAprem]);
-            const infoSoir = obtenirInfosMeteo(hourly.weather_code[indexSoir]);
-
-            // Affichage Emojis
-            document.getElementById('icone-matin').innerText = infoMatin.img;
-            document.getElementById('icone-midi').innerText = infoMidi.img;
-            document.getElementById('icone-aprem').innerText = infoAprem.img;
-            document.getElementById('icone-soir').innerText = infoSoir.img;
-
-            // Affichage des explications écrites textuelles
-            document.getElementById('desc-matin').innerText = infoMatin.txt;
-            document.getElementById('desc-midi').innerText = infoMidi.txt;
-            document.getElementById('desc-aprem').innerText = infoAprem.txt;
-            document.getElementById('desc-soir').innerText = infoSoir.txt;
-
-            // Affichage Températures
-            document.getElementById('temp-matin').innerText = hourly.temperature_2m[indexMatin].toFixed(1) + "°C";
-            document.getElementById('temp-midi').innerText = hourly.temperature_2m[indexMidi].toFixed(1) + "°C";
-            document.getElementById('temp-aprem').innerText = hourly.temperature_2m[indexAprem].toFixed(1) + "°C";
-            document.getElementById('temp-soir').innerText = hourly.temperature_2m[indexSoir].toFixed(1) + "°C";
+            for (let m in moments) {
+                let idx = moments[m];
+                let info = obtenirInfosMeteo(hourly.weather_code[idx]);
+                
+                document.getElementById(`icone-${m}`).innerText = info.img;
+                
+                let descEl = document.getElementById(`desc-${m}`);
+                descEl.className = "text-[10px] text-slate-300 block h-4 mb-1";
+                descEl.innerText = info.txt;
+                
+                let tempEl = document.getElementById(`temp-${m}`);
+                tempEl.className = "text-sm font-bold text-white";
+                tempEl.innerText = hourly.temperature_2m[idx].toFixed(1) + "°C";
+            }
         }
 
         function reinitialiserIntervallesHorsZone() {
-            ["matin", "midi", "aprem", "soir"].forEach(moment => {
-                document.getElementById(`icone-${moment}`).innerText = "❌";
-                document.getElementById(`desc-${moment}`).innerText = "--";
-                document.getElementById(`temp-${moment}`).innerText = "Indisponible";
+            ["matin", "midi", "aprem", "soir"].forEach(m => {
+                document.getElementById(`icone-${m}`).innerText = "❌";
+                document.getElementById(`desc-${m}`).className = "text-[10px] text-red-400 block h-4 mb-1";
+                document.getElementById(`desc-${m}`).innerText = "--";
+                document.getElementById(`temp-${m}`).className = "text-xs font-semibold text-slate-500";
+                document.getElementById(`temp-${m}`).innerText = "Indisponible";
             });
         }
 
+        // --- GESTION DES ONGLETS DE DONNÉES ---
+        function changerTypeDonneePrincipal(type) {
+            typeDonneePrincipal = type;
+            ['temp', 'pluie', 'vent'].forEach(t => {
+                let btn = document.getElementById(`tab-macro-${t}`);
+                if(t === type) {
+                    btn.className = "px-2 py-1 rounded bg-blue-500 font-bold text-slate-900 cursor-pointer";
+                } else {
+                    btn.className = "px-2 py-1 rounded text-slate-400 cursor-pointer";
+                }
+            });
+            construireGraphiquePrincipal();
+        }
+
+        function changerTypeDonneeArome(type) {
+            typeDonneeArome = type;
+            ['temp', 'pluie', 'vent'].forEach(t => {
+                let btn = document.getElementById(`tab-arome-${t}`);
+                if(t === type) {
+                    btn.className = "px-2 py-1 rounded bg-amber-500 font-bold text-slate-900 cursor-pointer";
+                } else {
+                    btn.className = "px-2 py-1 rounded text-slate-400 cursor-pointer";
+                }
+            });
+            construireGraphiqueArome();
+        }
+
+        function extraireData(cleModele, typeDonnee) {
+            if(!baseDonneesRaw[cleModele]) return [];
+            if(typeDonnee === 'temp') return baseDonneesRaw[cleModele].temperature_2m;
+            if(typeDonnee === 'pluie') return baseDonneesRaw[cleModele].precipitation;
+            if(typeDonnee === 'vent') return baseDonneesRaw[cleModele].wind_gusts_10m;
+            return [];
+        }
+
+        function obtenirUniteEtAxe(typeDonnee) {
+            if(typeDonnee === 'temp') return '°C';
+            if(typeDonnee === 'pluie') return ' mm';
+            if(typeDonnee === 'vent') return ' km/h';
+            return '';
+        }
+
+        // --- ENGINS DE RENDU DES GRAPHIQUES ---
         function construireGraphiquePrincipal() {
             const ctx = document.getElementById('graphiquePrincipal').getContext('2d');
             if (chartPrincipal) chartPrincipal.destroy();
+            
+            let suffixe = obtenirUniteEtAxe(typeDonneePrincipal);
+
             chartPrincipal = new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: donneesMeteo.labels5J,
                     datasets: [
-                        { label: 'ARPEGE (Météo-France)', data: donneesMeteo.arpege, borderColor: '#06b6d4', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 0, tension: 0.1, hidden: !statusModeles[0] },
-                        { label: 'ICON (Allemagne)', data: donneesMeteo.icon, borderColor: '#a855f7', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 0, tension: 0.1, hidden: !statusModeles[1] },
-                        { label: 'GFS (USA)', data: donneesMeteo.gfs, borderColor: '#ef4444', backgroundColor: 'transparent', borderWidth: 1.5, borderDash: [4, 4], pointRadius: 0, tension: 0.1, hidden: !statusModeles[2] },
-                        { label: 'ECMWF IFS (Europe)', data: donneesMeteo.ec5j, borderColor: '#6366f1', backgroundColor: 'transparent', borderWidth: 2.5, pointRadius: 0, tension: 0.1, hidden: !statusModeles[3] }
+                        { label: 'ARPEGE (Météo-France)', data: extraireData('arpege', typeDonneePrincipal), borderColor: '#06b6d4', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 0, tension: 0.1, hidden: !statusModeles[0] },
+                        { label: 'ICON (Allemagne)', data: extraireData('icon', typeDonneePrincipal), borderColor: '#a855f7', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 0, tension: 0.1, hidden: !statusModeles[1] },
+                        { label: 'GFS (USA)', data: extraireData('gfs', typeDonneePrincipal), borderColor: '#ef4444', backgroundColor: 'transparent', borderWidth: 1.5, borderDash: [4, 4], pointRadius: 0, tension: 0.1, hidden: !statusModeles[2] },
+                        { label: 'ECMWF IFS (Europe)', data: extraireData('ecmwf', typeDonneePrincipal).slice(0, 120), borderColor: '#6366f1', backgroundColor: 'transparent', borderWidth: 2.5, pointRadius: 0, tension: 0.1, hidden: !statusModeles[3] }
                     ]
                 },
                 options: {
@@ -376,7 +448,7 @@
                     plugins: { legend: { display: false } },
                     scales: {
                         x: { ticks: { maxTicksLimit: 12 }, grid: { color: '#334155' } },
-                        y: { ticks: { callback: v => v + '°C' }, grid: { color: '#334155' } }
+                        y: { ticks: { callback: v => v + suffixe }, grid: { color: '#334155' } }
                     }
                 }
             });
@@ -385,11 +457,24 @@
         function construireGraphiqueArome() {
             const ctx = document.getElementById('graphiqueArome').getContext('2d');
             if (chartArome) chartArome.destroy();
+            
+            let suffixe = obtenirUniteEtAxe(typeDonneeArome);
+            let rawArome = extraireData('arome', typeDonneeArome);
+
             chartArome = new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: donneesMeteo.labels2J,
-                    datasets: [{ label: 'AROME Maille Fine', data: donneesMeteo.arome, borderColor: '#fbbf24', backgroundColor: 'rgba(251, 191, 36, 0.05)', fill: true, borderWidth: 3, pointRadius: 0, tension: 0.2 }]
+                    datasets: [{ 
+                        label: 'AROME Maille Fine', 
+                        data: rawArome, 
+                        borderColor: '#fbbf24', 
+                        backgroundColor: typeDonneeArome === 'pluie' ? 'rgba(56, 189, 248, 0.2)' : 'rgba(251, 191, 36, 0.05)', 
+                        fill: true, 
+                        borderWidth: 3, 
+                        pointRadius: 0, 
+                        tension: 0.2 
+                    }]
                 },
                 options: {
                     responsive: true,
@@ -397,7 +482,7 @@
                     plugins: { legend: { display: false } },
                     scales: {
                         x: { ticks: { maxTicksLimit: 6 }, grid: { color: '#334155' } },
-                        y: { ticks: { callback: v => v + '°C' }, grid: { color: '#334155' } }
+                        y: { ticks: { callback: v => v + suffixe }, grid: { color: '#334155' } }
                     }
                 }
             });
@@ -406,11 +491,14 @@
         function construireGraphiqueSuite10Jours() {
             const ctx = document.getElementById('graphique10Jours').getContext('2d');
             if (chart10Jours) chart10Jours.destroy();
+            
+            let suiteEC = baseDonneesRaw.ecmwf ? baseDonneesRaw.ecmwf.temperature_2m.slice(120, 240) : [];
+
             chart10Jours = new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: donneesMeteo.labelsSuite10J,
-                    datasets: [{ label: 'Suite Long Terme ECMWF (5 à 10 Jours)', data: donneesMeteo.ecSuite10j, borderColor: '#4f46e5', backgroundColor: 'rgba(79, 70, 229, 0.05)', fill: true, borderWidth: 2.5, pointRadius: 0, tension: 0.15 }]
+                    datasets: [{ label: 'Tendances Échéance Lointaine ECMWF (5 à 10 Jours)', data: suiteEC, borderColor: '#4f46e5', backgroundColor: 'rgba(79, 70, 229, 0.05)', fill: true, borderWidth: 2.5, pointRadius: 0, tension: 0.15 }]
                 },
                 options: {
                     responsive: true,
@@ -437,9 +525,9 @@
         }
 
         async function initialiserPage() {
+            activerSkeletons();
             const succes = await chercherCoordonneesVille(CONFIG_VILLE);
             if (!succes) {
-                // Secours sur Brûlain si la ville configurée échoue au géocodage
                 await chercherCoordonneesVille("Brûlain");
             }
             chargerToutesLesDonnees();
